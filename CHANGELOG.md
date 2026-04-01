@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added support for BDS version 1.26.12.
+- Added `BlockType` to the registry API.
+- Added `Lunge` enchantment type for spears.
+
+### Fixed
+
+- Fixed `PacketReceiveEvent` error messages to include the packet ID for easier debugging.
+- Fixed `TextPacket` and `InventorySlotPacket` serialization causing bad packet disconnections.
+- Fixed `Translatable` messages being sent as raw `Translate` type instead of JSON `TextObject` (#344).
+- Fixed several issues in the metrics module.
+
 ## [0.11.2] - 2026-03-02
 
 ### Added
