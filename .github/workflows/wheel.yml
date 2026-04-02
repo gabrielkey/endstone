@@ -59,7 +59,7 @@ jobs:
         run: echo "CONAN_HOME=/host${HOME}/.conan2" >> $GITHUB_ENV
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.4.0
+        uses: pypa/cibuildwheel@v3.3.1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           CIBW_BUILD: ${{ matrix.python-tag }}-${{ matrix.platform }}
@@ -70,32 +70,10 @@ jobs:
         if: runner.os == 'Linux'
         run: sudo chown -R $USER:$USER ~/.conan2
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@v6
         with:
+          name: endstone-wheels-${{ matrix.python-tag }}-${{ matrix.platform }}
           path: ./wheelhouse/*.whl
-          archive: false
-
-  publish:
-    name: Publish Wheels to PyPI
-    runs-on: ubuntu-latest
-    needs: [ build_wheels ]
-    environment: pypi
-    permissions:
-      id-token: write
-      contents: write
-
-    steps:
-      - name: Restore Artifacts
-        uses: actions/download-artifact@v8
-        with:
-          pattern: '*.whl'
-          path: dist
-          merge-multiple: true
-          skip-decompress: true
-
-      - name: Publish to PyPI
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: pypa/gh-action-pypi-publish@release/v1
 
   portable:
     name: Windows Portable
@@ -153,28 +131,40 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
+          name: endstone-win_amd64-portable
           path: endstone-win_amd64-portable.zip
-          name: endstone-win_amd64-portable.zip
 
-  portable_release:
-    name: Release Portable
+  release:
+    name: Release
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
-    needs: [ portable ]
+    needs: [ build_wheels, portable ]
+    environment: pypi
     permissions:
       id-token: write
       contents: write
 
     steps:
-      - name: Restore Artifacts
+      - name: Download wheel artifacts
         uses: actions/download-artifact@v7
         with:
-          pattern: endstone-*
-          path: dist
+          pattern: endstone-wheels-*
+          path: dist/wheels
           merge-multiple: true
 
-      - name: Release
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/wheels
+
+      - name: Download portable artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: endstone-win_amd64-portable
+          path: dist/portable
+
+      - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          files: dist/*
+          files: dist/portable/*
