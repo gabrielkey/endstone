@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.3] - 2026-04-02
+
 ### Added
 
 - Added support for BDS version 1.26.12.
@@ -1034,6 +1036,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Basic command system that allows plugins to register custom commands.
 
 [unreleased]: https://github.com/EndstoneMC/endstone/compare/v0.11.2...HEAD
+[Unreleased]: https://github.com/EndstoneMC/endstone/compare/v0.11.3...HEAD
+[0.11.3]: https://github.com/EndstoneMC/endstone/compare/v0.11.2...v0.11.3
 [0.11.2]: https://github.com/EndstoneMC/endstone/compare/v0.11.1...v0.11.2
 [0.11.1]: https://github.com/EndstoneMC/endstone/compare/v0.11.0...v0.11.1
 [0.11.0]: https://github.com/EndstoneMC/endstone/compare/v0.10.18...v0.11.0
