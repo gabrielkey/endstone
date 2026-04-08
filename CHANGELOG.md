@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fixed type annotations for `Plugin` and `event_handler`.
-- Fixed `Player.sendMessage` accepting empty messages.
+- Fixed `Player.send_message` accepting empty messages.
 - Fixed command argument parsing dropping optional message parameters with empty tokens.
 - Fixed plugin manager destruction order causing access violations on shutdown.
 
